@@ -1,6 +1,7 @@
 import { createAlert } from "./ui/alert.js";
 
 let fd = document.querySelector(".finderbar")
+let zIndex = 5;
 
 export function create(file, light = null) {
     fetch(file)
@@ -56,6 +57,12 @@ export function resetWindowListeners(light = null) {
         zoomBtn.addEventListener("click", () => {
             console.log("Clicked maximize");
         });
+
+        win.addEventListener('mousedown', function(e) {
+            if (!e.target.closest('.wintools')) {
+                bringToFront(win);
+            }
+        });
     });
 }
 
@@ -66,12 +73,16 @@ function addWindowDrag(windowElement) {
     const titleBar = windowElement;
 
     titleBar.addEventListener('mousedown', function (e) {
+        if (e.target.closest('.wintools')) {
+            return;
+        }
+
         isDragging = true;
 
         offsetX = e.clientX - windowElement.getBoundingClientRect().left;
         offsetY = e.clientY - windowElement.getBoundingClientRect().top;
 
-        windowElement.style.zIndex = 1000;
+        bringToFront(windowElement);
         e.preventDefault();
     });
 
@@ -81,7 +92,8 @@ function addWindowDrag(windowElement) {
         let newX = e.clientX - offsetX;
         let newY = e.clientY - offsetY;
 
-        newY = Math.max(document.querySelector(".finderbar").offsetHeight, newY);
+        const minY = fd ? fd.offsetHeight : 0;
+        newY = Math.max(minY, newY);
 
         windowElement.style.left = newX + 'px';
         windowElement.style.top = newY + 'px';
@@ -90,4 +102,9 @@ function addWindowDrag(windowElement) {
     document.addEventListener('mouseup', function () {
         isDragging = false;
     });
+}
+
+function bringToFront(windowElement) {
+    zIndex += 1;
+    windowElement.style.zIndex = zIndex;
 }
