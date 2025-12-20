@@ -1,21 +1,3 @@
-@keyframes parabola {
-    0% {
-        transform: translateY(0);
-        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    50% {
-        transform: translateY(-20px);
-        animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
-    }
-    90% {
-        transform: translateY(-4px);
-        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    100% {
-        transform: translateY(0);
-    }
-}
-
 @keyframes come {
     0% {
         transform: translateY(80px);
@@ -26,36 +8,28 @@
     }
 }
 
-.tip {
-    /* display: inline-block; */
-    width: auto;
-    height: auto;
-    background: #fff5;
-    backdrop-filter: blur(50px) brightness(90%);
-    -webkit-backdrop-filter: blur(50px) brightness(90%);
-    padding: 2px 8px;
-    border-radius: 5px;
-    font-size: 14px;
-    user-select: none;
-    -webkit-user-select: none;
-    display: none;
-    /* Origin block */
+@keyframes parabola {
+    0% {
+        transform: translateY(0);
+        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
 
-    &::after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        bottom: -7.5px;
-        transform: translateX(-50%) rotate(180deg);
-        border-style: solid;
-        border-width: 0 7.5px 7.5px 7.5px;
-        border-color: transparent transparent #fff5 transparent;
-        backdrop-filter: blur(50px) brightness(90%);
-        -webkit-backdrop-filter: blur(50px) brightness(90%);
+    50% {
+        transform: translateY(-20px);
+        animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    }
+
+    90% {
+        transform: translateY(-4px);
+        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    100% {
+        transform: translateY(0);
     }
 }
 
-.dock {
+#dock {
     width: auto;
     height: 56.5px;
     display: inline-flex;
@@ -68,59 +42,57 @@
     user-select: none;
     -webkit-user-select: none;
     box-shadow: 0 -2px 20px #0005, inset 0 0 2px #1a1a1abb;
-    // border: solid 2px rgba(105, 105, 105, 0.36);
     z-index: 2049;
     backdrop-filter: blur(50px) saturate(1.8);
     background: rgba(246, 246, 246, 0.46);
     transform: translateY(80px);
     animation: come 0.7s ease forwards;
     animation-delay: 0.2s;
+}
 
-    .container {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+#dock.autohide {}
 
-        img {
-            width: 50px;
-            height: 50px;
-            transition: filter 0.05s;
-            will-change: width;
-            transform-origin: bottom;
-            // &.smooth-reset {
-            //     // transition: width 0.2s ease, height 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-            //     transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-            // }
-            &.opening {
-                animation: parabola 1s infinite;
-            }
+#dock .container {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-            &:active {
-                filter: brightness(0.5);
-            }
-        }
+#dock .container img {
+    width: 50px;
+    height: 50px;
+    transition: filter 0.05s;
+    will-change: width;
+    transform-origin: bottom;
+}
 
-        hr {
-            border: none;
-            height: 42.5px;
-            width: 1px;
-            border-radius: 1px;
-            background: #e8e8e866;
-            margin: 0 10px;
-            margin-bottom: 5px;
-        }
+#dock .container img.opening {
+    animation: parabola 1s infinite;
+}
 
-        .light {
-            width: 4px;
-            height: 4px;
-            border-radius: 4px;
-            background: #0000;
-            margin-top: 2.5px;
+#dock .container img:active {
+    filter: brightness(0.5);
+}
 
-            &.on {
-                background: #0008;
-            }
-        }
-    }
+#dock .container hr {
+    border: none;
+    height: 42.5px;
+    width: 1px;
+    border-radius: 1px;
+    background: #e8e8e866;
+    margin: 0 10px;
+    margin-bottom: 5px;
+}
+
+#dock .container .light {
+    width: 4px;
+    height: 4px;
+    border-radius: 4px;
+    background: #0000;
+    margin-top: 2.5px;
+}
+
+#dock .container .light.on {
+    background: #0008;
 }

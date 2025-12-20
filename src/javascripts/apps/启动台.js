@@ -30,7 +30,7 @@ function init() {
         containers.appendChild(div);
 
         img.addEventListener("click", () => {
-            create("./assets/apps/"+app+".html", app);
+            create("./assets/apps/" + app + ".html", app, null, app === "计算器");
             closeLaunchpad();
         });
     });

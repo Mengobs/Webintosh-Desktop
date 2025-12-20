@@ -5,7 +5,7 @@ let fd = document.querySelector(".finderbar")
 let zIndex = 5;
 window.specialCloses = {};
 
-export function create(file, name, light = null) {
+export function create(file, name, light = null, centered = false) {
     const cleanFile = file.split("/").pop().split(".")[0];
     if (!name) name = cleanFile;
     const existing = document.getElementById(name);
@@ -27,6 +27,20 @@ export function create(file, name, light = null) {
                     if (wins.length) {
                         const newWin = wins[wins.length - 1];
                         if (newWin && !newWin.id) newWin.id = name;
+
+                        if (centered) {
+                            newWin.style.left = `${(window.innerWidth - newWin.offsetWidth) / 2}px`;
+                            newWin.style.top = `${(window.innerHeight - newWin.offsetHeight) / 2}px`;
+                            setTimeout(() => {
+                                newWin.style.left = `${(window.innerWidth - newWin.offsetWidth) / 2}px`;
+                                newWin.style.top = `${(window.innerHeight - newWin.offsetHeight) / 2}px`;
+                            }, 50);
+                        }
+
+                        const resizer = document.createElement('div');
+                        resizer.className = 'resizer';
+                        newWin.appendChild(resizer);
+                        addResizeListener(newWin, resizer);
                     }
                     let script = document.createElement("script");
                     script.src = `./src/javascripts/apps/${cleanFile}.js?v=${Date.now()}`;
@@ -63,20 +77,12 @@ export function resetWindowListeners(name, light = null) {
 
         win._closeWindow = closeWindow;
 
-        addWindowDrag(win);
+        addWindowDrag(win, name);
 
-        closeBtn.addEventListener("click", () => {
-            closeWindow();
-        });
-        miniBtn.addEventListener("click", () => {
-            console.log("Clicked minimize");
-        });
-        zoomBtn.addEventListener("click", () => {
-            console.log("Clicked maximize");
-        });
+        if (closeBtn) closeBtn.addEventListener("click", () => closeWindow());
 
-        win.addEventListener('mousedown', function(e) {
-            if (!e.target.closest('.wintools')) {
+        win.addEventListener('mousedown', function (e) {
+            if (!e.target.closest('.wintools div')) {
                 bringToFront(win, name);
             }
         });
@@ -87,15 +93,12 @@ function addWindowDrag(windowElement, name) {
     let isDragging = false;
     let offsetX, offsetY;
 
-    const titleBar = windowElement;
-
-    titleBar.addEventListener('mousedown', function (e) {
-        if (e.target.closest('.wintools')) {
+    windowElement.addEventListener('mousedown', function (e) {
+        if (e.target.closest('.wintools div') || e.target.closest('.resizer')) {
             return;
         }
 
         isDragging = true;
-
         offsetX = e.clientX - windowElement.getBoundingClientRect().left;
         offsetY = e.clientY - windowElement.getBoundingClientRect().top;
 
@@ -121,6 +124,30 @@ function addWindowDrag(windowElement, name) {
     });
 
     updateMenu(name);
+}
+
+function addResizeListener(windowElement, resizer) {
+    let isResizing = false;
+
+    resizer.addEventListener('mousedown', function (e) {
+        isResizing = true;
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function (e) {
+        if (!isResizing) return;
+
+        const rect = windowElement.getBoundingClientRect();
+        const newWidth = e.clientX - rect.left;
+        const newHeight = e.clientY - rect.top;
+
+        if (newWidth > 200) windowElement.style.width = newWidth + 'px';
+        if (newHeight > 150) windowElement.style.height = newHeight + 'px';
+    });
+
+    document.addEventListener('mouseup', function () {
+        isResizing = false;
+    });
 }
 
 export function bringToFront(windowElement, name) {

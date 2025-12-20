@@ -76,7 +76,6 @@ p {
             height: calc(100% - 48px);
             display: flex;
             flex-direction: column;
-            // align-items: center;
             margin-top: 15px;
             overflow-y: scroll;
             margin-right: 4px;
@@ -115,7 +114,6 @@ p {
                 .icon {
                     width: 24px;
                     height: 24px;
-                    // margin-left: 5.5px;
                 }
 
                 p {
@@ -193,7 +191,6 @@ p {
 
                 img {
                     width: 10px;
-                    // height: 36px;
                     margin-right: 14px;
                 }
             }
@@ -209,7 +206,6 @@ p {
         .main {
             width: 100%;
             height: 100%;
-            // z-index: -2;
 
             .page {
                 display: none;

@@ -42,3 +42,20 @@ selections.forEach(selection => {
         rightTitle.textContent = selection.querySelector("p:not(.title)").textContent;
     });
 });
+
+const dockAutoHideSwitch = document.getElementById("dock-autohide");
+if (dockAutoHideSwitch) {
+    dockAutoHideSwitch.state = localStorage.getItem("dock-autohide") || "off";
+
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.type === "attributes" && mutation.attributeName === "state") {
+                const newState = dockAutoHideSwitch.getAttribute("state");
+                localStorage.setItem("dock-autohide", newState);
+                window.dispatchEvent(new CustomEvent("dock-autohide-change", { detail: newState }));
+            }
+        });
+    });
+
+    observer.observe(dockAutoHideSwitch, { attributes: true });
+}
