@@ -2,10 +2,9 @@ let newNotification;
 let newNotificationTitle;
 let newNotificationText;
 let newNotificationTime;
-let newNotificationCommand;
 let audio = new Audio("./assets/sounds/alert.ogg");
 
-export function createNotification(icon, title, text, command, time = "now") {
+export function createNotification(icon, title, text, command, time = "刚刚") {
     audio.play();
 
     newNotification = document.createElement("c-notification");
@@ -31,6 +30,6 @@ export function createNotification(icon, title, text, command, time = "now") {
         newNotification.classList.add("close");
         setTimeout(() => {
             newNotification.remove();
-        }, 450);
+        }, 400);
     }, 5500);
 }
