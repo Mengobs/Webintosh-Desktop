@@ -3,23 +3,19 @@
     opacity: 0;
     transform: scale(1.1);
   }
-
   100% {
     opacity: 1;
     transform: scale(1);
   }
 }
-
 @keyframes fade {
   0% {
     opacity: 0;
   }
-
   100% {
     opacity: 1;
   }
 }
-
 .launchpad {
   width: 100%;
   height: 100%;
@@ -29,7 +25,6 @@
   overflow: hidden;
   z-index: 2048;
 }
-
 .launchpad .containers {
   width: calc(100% - 14vw);
   height: calc(100% - 18vh);
@@ -41,28 +36,23 @@
   padding-bottom: 11vh;
   animation: animation 0.3s ease-in-out forwards;
 }
-
 .launchpad .containers .container {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-
 .launchpad .containers .container img {
   width: 5vw;
   height: 10vh;
 }
-
 .launchpad .containers .container p {
   font-size: 12px;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
-
 .launchpad p {
   margin: 0;
 }
-
 .launchpad .bg {
   width: 100%;
   height: 100%;
@@ -78,6 +68,4 @@
   transform: scale(1.2);
   opacity: 1;
   animation: fade 0.25s ease-in forwards;
-}
-
-/*# sourceMappingURL=index.css.map */
+}/*# sourceMappingURL=index.css.map */
