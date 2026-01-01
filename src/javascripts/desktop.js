@@ -17,6 +17,34 @@ document.addEventListener("mousedown", (e) => {
 });
 
 document.addEventListener("contextmenu", (e) => {
+    const item = e.target.closest(".item");
+    if (item) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        document.querySelectorAll(".item.selected").forEach(el => el.classList.remove("selected"));
+        item.classList.add("selected");
+
+        const p = item.querySelector("p");
+
+        createContextMenu(e.clientX, e.clientY, [
+            { label: "打开", action: () => { } },
+            { type: "separator" },
+            {
+                label: "重命名", action: () => {
+                    const newName = prompt("重命名为:", p.innerText);
+                    if (newName && newName.trim() !== "") {
+                        p.innerText = newName;
+                    }
+                }
+            },
+            { label: "移到废纸篓", action: () => item.remove() },
+            { type: "separator" },
+            { label: "显示简介", disabled: true },
+        ]);
+        return;
+    }
+
     const isDesktopArea = e.target === desktop ||
         e.target.classList.contains("container") ||
         e.target.classList.contains("wallpaper") ||

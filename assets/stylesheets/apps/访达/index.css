@@ -1,0 +1,195 @@
+.finder {
+    box-shadow: 0 36px 100px 0 rgba(0, 0, 0, 0.40), 0 0 3px 0 rgba(0, 0, 0, 0.55), inset 0 0 3px 0 rgba(255, 255, 255, 0.10);
+    border-radius: 12px;
+    width: 800px;
+    height: 500px;
+    display: inline-flex;
+    flex-direction: row;
+    position: absolute;
+    top: calc(50% - 250px);
+    left: calc(50% - 400px);
+    overflow: hidden;
+    display: inline-flex;
+    flex-direction: row;
+    position: absolute;
+    top: calc(50% - 250px);
+    left: calc(50% - 400px);
+    overflow: hidden;
+    font-family: "SFPro", sans-serif;
+}
+
+.finder .left {
+    width: 200px;
+    height: 100%;
+    background: rgba(246, 246, 246, 0.84);
+    backdrop-filter: blur(30px) brightness(2);
+    -webkit-backdrop-filter: blur(50px) brightness(2);
+    display: flex;
+    flex-direction: column;
+}
+
+.finder .left .topbar {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.finder .left .topbar .wintools {
+    display: flex;
+    gap: 8px;
+}
+
+.finder .left .topbar .wintools .red,
+.finder .left .topbar .wintools .yellow,
+.finder .left .topbar .wintools .green {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 0.5px solid rgba(0, 0, 0, 0.2);
+}
+
+.finder .left .topbar .wintools .red {
+    background: #ff5f57;
+}
+
+.finder .left .topbar .wintools .yellow {
+    background: #febc2e;
+}
+
+.finder .left .topbar .wintools .green {
+    background: #28c840;
+}
+
+.finder .left .topbar .wintools div:active {
+    filter: brightness(0.85);
+}
+
+.finder .left .sidebar-list {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.finder .left .sidebar-list .group-title {
+    font-size: 11px;
+    color: #888;
+    font-weight: 600;
+    margin: 10px 10px 5px;
+}
+
+.finder .left .sidebar-list .item {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: default;
+}
+
+.finder .left .sidebar-list .item.active {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.finder .left .sidebar-list .item .icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    filter: opacity(0.8);
+}
+
+.finder .left .sidebar-list .item span {
+    font-size: 13px;
+}
+
+.finder .edge {
+    width: 1px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.finder .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+}
+
+.finder .right .toolbar {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.finder .right .toolbar .navigation-controls {
+    display: flex;
+    gap: 15px;
+    margin-right: 20px;
+}
+
+.finder .right .toolbar .navigation-controls img {
+    width: 10px;
+    opacity: 0.5;
+}
+
+.finder .right .toolbar .title {
+    font-weight: 600;
+    font-size: 14px;
+    flex: 1;
+    text-align: center;
+    margin-right: 60px;
+}
+
+.finder .right .main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 20px;
+}
+
+.finder .right .main-content .file-item {
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: default;
+}
+
+.finder .right .main-content .file-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+}
+
+.finder .right .main-content .file-item.selected {
+    background: #e4eefb;
+    border-radius: 6px;
+}
+
+.finder .right .main-content .file-item.selected img {
+    opacity: 0.8;
+}
+
+.finder .right .main-content .file-item.selected span {
+    background: #3478f6;
+    color: white;
+    border-radius: 3px;
+    padding: 0 4px;
+}
+
+.finder .right .main-content .file-item img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 5px;
+    object-fit: contain;
+}
+
+.finder .right .main-content .file-item span {
+    font-size: 12px;
+    color: #333;
+    word-break: break-all;
+    line-height: 1.3;
+}
