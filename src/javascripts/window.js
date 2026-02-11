@@ -59,6 +59,12 @@ export function create(file, name, light = null, centered = false) {
     setTimeout(() => {
         resetWindowListeners(name, light);
     }, 150);
+    setTimeout(() => {
+        resetWindowListeners(name, light);
+    }, 300);
+    setTimeout(() => {
+        resetWindowListeners(name, light);
+    }, 450);
 }
 
 export function resetWindowListeners(name, light = null) {
