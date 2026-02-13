@@ -2,8 +2,7 @@
   width: 280px;
   height: 515px;
   background: rgba(255, 255, 255, 0.4666666667);
-  -webkit-backdrop-filter: blur(40px) saturate(1.2);
-          backdrop-filter: blur(40px) saturate(1.2);
+  backdrop-filter: blur(40px) saturate(1.2);
   position: absolute;
   top: calc(50% - 257.5px);
   left: calc(50% - 140px);
@@ -73,11 +72,11 @@
   padding: 2px 12px;
   margin-bottom: 15px;
 }
-.about_this_mac p.copyright {
-  opacity: 0.8;
-}
 .about_this_mac p.copyright span {
   text-decoration: underline;
+}
+.about_this_mac p.copyright {
+  opacity: 0.8;
 }
 
 .wintools {

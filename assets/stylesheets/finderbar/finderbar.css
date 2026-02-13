@@ -2,8 +2,7 @@
   width: 100vw;
   height: 24px !important;
   /* M2+ MacBook 35px, normal Mac 24px */
-  -webkit-backdrop-filter: blur(50px) saturate(0.8);
-          backdrop-filter: blur(50px) saturate(0.8);
+  backdrop-filter: blur(50px) saturate(0.8);
   display: flex;
   flex-direction: row;
   align-items: center;

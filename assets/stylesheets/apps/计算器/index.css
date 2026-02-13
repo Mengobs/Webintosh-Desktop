@@ -1,8 +1,7 @@
 .calc.window {
   width: 232px;
   background: rgba(40, 40, 40, 0.95);
-  -webkit-backdrop-filter: blur(20px);
-          backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border-radius: 12px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   padding: 12px;
