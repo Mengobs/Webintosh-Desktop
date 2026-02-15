@@ -5,6 +5,9 @@ let fd = document.querySelector(".finderbar");
 export let zIndex = 5;
 window.specialCloses = {};
 
+let activeDraggingWindow = null;
+let activeResizingWindow = null;
+
 export function create(file, name, light = null, centered = false) {
   const cleanFile = file.split("/").pop().split(".")[0];
   if (!name) name = cleanFile;
@@ -72,6 +75,15 @@ export function create(file, name, light = null, centered = false) {
   }, 450);
 }
 
+// 通用设置窗口位置（大小）的函数
+export function setWindowPosition(win, left, top, width, height, zIndex) {
+  if (left !== undefined) win.style.left = left;
+  if (top !== undefined) win.style.top = top;
+  if (width !== undefined) win.style.width = width;
+  if (height !== undefined) win.style.height = height;
+  if (zIndex !== undefined) win.style.zIndex = zIndex;
+}
+
 export function resetWindowListeners(name, light = null) {
   let windows = document.querySelectorAll(".window");
   windows.forEach((win) => {
@@ -83,7 +95,7 @@ export function resetWindowListeners(name, light = null) {
       win.querySelector(".wintools .green") ||
       win.querySelectorAll(".wintools .gray")[1];
 
-    if (!win.zoomed) win.zoomed = false;
+    if (!win.isStretched) win.isStretched = false;
 
     // 关闭窗口
     const closeWindow = () => {
@@ -94,47 +106,100 @@ export function resetWindowListeners(name, light = null) {
       if (window.appStatus) window.appStatus[name] = false;
     };
 
-    // 切换窗口大小
-    const toggleZoom = () => {
-      win.style.transition =
-        "left 0.3s ease, top 0.3s ease, width 0.3s ease, height 0.3s ease";
-      if (!win.zoomed) {
+    // 切换拉伸窗口至桌面空白（保留顶部状态栏和底部dock的全屏）
+    const toggleStretchWindow = (withTransition = true) => {
+      if (withTransition) {
+        win.style.transition =
+          "left 0.3s ease, top 0.3s ease, width 0.3s ease, height 0.3s ease";
+      }
+      if (!win.isStretched) {
         const finderbar = document.getElementById("finderbar");
-        const dock = document.getElementById("dock");
+        const dock = document.getElementsByClassName("dockcontainer")[0];
         const finderbarHeight = finderbar ? finderbar.offsetHeight : 0;
         const dockHeight = dock ? dock.offsetHeight : 0;
-        win._preZoomState = {
+        win._preStretchState = {
           left: win.style.left,
           top: win.style.top,
           width: win.style.width,
           height: win.style.height,
         };
-        win.style.left = "0";
-        win.style.top = finderbarHeight + "px";
-        win.style.width = "100vw";
-        win.style.height = `calc(100vh - ${finderbarHeight}px - ${dockHeight}px)`;
-        win.zoomed = true;
+        setWindowPosition(
+          win,
+          "0",
+          finderbarHeight + "px",
+          "100vw",
+          `calc(100vh - ${finderbarHeight}px - ${dockHeight}px)`,
+        );
+        win.isStretched = true;
       } else {
-        if (win._preZoomState) {
-          win.style.left = win._preZoomState.left;
-          win.style.top = win._preZoomState.top;
-          win.style.width = win._preZoomState.width;
-          win.style.height = win._preZoomState.height;
+        if (win._preStretchState) {
+          setWindowPosition(
+            win,
+            win._preStretchState.left,
+            win._preStretchState.top,
+            win._preStretchState.width,
+            win._preStretchState.height,
+          );
         }
-        win.zoomed = false;
+        win.isStretched = false;
       }
-      // 动画结束后清除 transition，避免影响其他操作
-      setTimeout(() => {
-        win.style.transition = "";
-      }, 300);
+      if (withTransition) {
+        setTimeout(() => {
+          win.style.transition = "";
+        }, 300);
+      }
+    };
+    // 切换全屏窗口至桌面
+    const toggleFullscreenWindow = (withTransition = true) => {
+      if (withTransition) {
+        win.style.transition =
+          "left 0.3s ease, top 0.3s ease, width 0.3s ease, height 0.3s ease";
+      }
+      if (!win.isFullscreen) {
+        win._preFullscreenState = {
+          left: win.style.left,
+          top: win.style.top,
+          width: win.style.width,
+          height: win.style.height,
+          zIndex: win.style.zIndex,
+        };
+        setWindowPosition(win, "0", "0", "100vw", `100vh`, 2050);
+        win.isFullscreen = true;
+      } else {
+        if (win._preFullscreenState) {
+          setWindowPosition(
+            win,
+            win._preFullscreenState.left,
+            win._preFullscreenState.top,
+            win._preFullscreenState.width,
+            win._preFullscreenState.height,
+            win._preFullscreenState.zIndex,
+          );
+        }
+        win.isFullscreen = false;
+      }
+      if (withTransition) {
+        setTimeout(() => {
+          win.style.transition = "";
+        }, 300);
+      }
     };
 
     win._closeWindow = closeWindow;
+    win._toggleStretchWindow = toggleStretchWindow;
+    win._toggleFullscreenWindow = toggleFullscreenWindow;
 
     addWindowDrag(win, name);
 
+    // 点击关闭按钮关闭窗口
     if (closeBtn) closeBtn.addEventListener("click", () => closeWindow());
+    // 点击最小化按钮最小化窗口
+    // if (miniBtn) miniBtn.addEventListener("click", () => toggleMinimizeWindow());
+    // 点击最大化按钮最大化窗口
+    if (zoomBtn)
+      zoomBtn.addEventListener("click", () => toggleFullscreenWindow());
 
+    // 双击窗口标题栏切换拉伸窗口至桌面空白（保留顶部状态栏和底部dock的全屏）
     const wintools = win.querySelector(".wintools");
     if (wintools) {
       wintools.addEventListener("dblclick", (e) => {
@@ -144,7 +209,7 @@ export function resetWindowListeners(name, light = null) {
           !e.target.closest(".green") &&
           !e.target.closest(".gray")
         ) {
-          toggleZoom();
+          toggleStretchWindow();
         }
       });
     }
@@ -158,65 +223,68 @@ export function resetWindowListeners(name, light = null) {
 }
 
 function addWindowDrag(windowElement, name) {
-  let isDragging = false;
-  let offsetX, offsetY;
-
   windowElement.addEventListener("mousedown", function (e) {
     if (e.target.closest(".wintools div") || e.target.closest(".resizer")) {
       return;
     }
 
-    isDragging = true;
-    offsetX = e.clientX - windowElement.getBoundingClientRect().left;
-    offsetY = e.clientY - windowElement.getBoundingClientRect().top;
+    activeDraggingWindow = {
+      element: windowElement,
+      name: name,
+      offsetX: e.clientX - windowElement.getBoundingClientRect().left,
+      offsetY: e.clientY - windowElement.getBoundingClientRect().top,
+    };
 
     bringToFront(windowElement, name);
     e.preventDefault();
   });
-
-  document.addEventListener("mousemove", function (e) {
-    if (!isDragging) return;
-
-    let newX = e.clientX - offsetX;
-    let newY = e.clientY - offsetY;
-
-    const minY = fd ? fd.offsetHeight : 0;
-    newY = Math.max(minY, newY);
-
-    windowElement.style.left = newX + "px";
-    windowElement.style.top = newY + "px";
-  });
-
-  document.addEventListener("mouseup", function () {
-    isDragging = false;
-  });
-
-  updateMenu(name);
 }
 
-function addResizeListener(windowElement, resizer) {
-  let isResizing = false;
+document.addEventListener("mousemove", function (e) {
+  if (activeDraggingWindow) {
+    const { element, offsetX, offsetY } = activeDraggingWindow;
 
-  resizer.addEventListener("mousedown", function (e) {
-    isResizing = true;
-    e.preventDefault();
-  });
+    if (element.isStretched && element._toggleStretchWindow) {
+      element._toggleStretchWindow(false);
+    }
+    if (element.isFullscreen && element._toggleFullscreenWindow) {
+      element._toggleFullscreenWindow(false);
+    }
 
-  document.addEventListener("mousemove", function (e) {
-    if (!isResizing) return;
+    const newX = e.clientX - offsetX;
+    const newY = e.clientY - offsetY;
 
-    const rect = windowElement.getBoundingClientRect();
+    const minY = fd ? fd.offsetHeight : 0;
+    const clampedY = Math.max(minY, newY);
+
+    element.style.left = newX + "px";
+    element.style.top = clampedY + "px";
+  }
+
+  if (activeResizingWindow) {
+    const rect = activeResizingWindow.getBoundingClientRect();
     const newWidth = e.clientX - rect.left;
     const newHeight = e.clientY - rect.top;
 
-    if (newWidth > 200) windowElement.style.width = newWidth + "px";
-    if (newHeight > 150) windowElement.style.height = newHeight + "px";
-  });
+    if (newWidth > 200) activeResizingWindow.style.width = newWidth + "px";
+    if (newHeight > 150) activeResizingWindow.style.height = newHeight + "px";
+  }
+});
 
-  document.addEventListener("mouseup", function () {
-    isResizing = false;
+function addResizeListener(windowElement, resizer) {
+  resizer.addEventListener("mousedown", function (e) {
+    activeResizingWindow = windowElement;
+    e.preventDefault();
   });
 }
+
+document.addEventListener("mouseup", function () {
+  if (activeDraggingWindow) {
+    updateMenu(activeDraggingWindow.name);
+    activeDraggingWindow = null;
+  }
+  activeResizingWindow = null;
+});
 
 export function bringToFront(windowElement, name) {
   zIndex += 1;
