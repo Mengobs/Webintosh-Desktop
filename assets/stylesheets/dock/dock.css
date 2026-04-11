@@ -98,8 +98,7 @@
   -webkit-user-select: none;
   box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.3333333333), inset 0 0 2px rgba(26, 26, 26, 0.7333333333);
   z-index: 2049;
-  -webkit-backdrop-filter: blur(50px) saturate(1.8);
-          backdrop-filter: blur(50px) saturate(1.8);
+  backdrop-filter: blur(50px) saturate(1.8);
   background: rgba(246, 246, 246, 0.46);
   transform: translateY(80px);
   animation: come 0.7s ease forwards;
