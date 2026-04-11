@@ -121,7 +121,7 @@ export function addToDock(app) {
         hrNextContainer.classList.add("container");
         hrNextContainer.appendChild(document.createElement("hr"));
         dock.insertBefore(container, hrContainer.nextSibling);
-        dock.insertBefore(hrNextContainer, container.nextSibling)
+        dock.insertBefore(hrNextContainer, container.nextSibling);
     } else {
         dock.appendChild(container);
     }
