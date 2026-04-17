@@ -57,7 +57,7 @@ p {
   background: #28c840;
   border: solid 0.5px rgba(0, 0, 0, 0.2);
 }
-.window .left .topbar c-input {
+.window .left .topbar swift-input {
   width: 200px;
   align-self: center;
   margin-top: 20px;

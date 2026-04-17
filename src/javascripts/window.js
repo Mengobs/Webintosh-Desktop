@@ -95,14 +95,6 @@ export function resetWindowListeners(name, light = null) {
       win.querySelector(".wintools .green") ||
       win.querySelectorAll(".wintools .gray")[1];
 
-<<<<<<< HEAD
-        const closeWindow = () => {
-            win.remove();
-            const s = document.querySelector(`script[app="${name}"]`);
-            if (s) s.remove();
-            if (light && !(noLightChanging.includes(name))) light.classList.remove("on");
-            if (window.appStatus) window.appStatus[name] = false;
-=======
     if (!win.isStretched) win.isStretched = false;
 
     // 关闭窗口
@@ -130,7 +122,6 @@ export function resetWindowListeners(name, light = null) {
           top: win.style.top,
           width: win.style.width,
           height: win.style.height,
->>>>>>> f18761e4dd64326bd3d4080b61d037e77711d57b
         };
         setWindowPosition(
           win,

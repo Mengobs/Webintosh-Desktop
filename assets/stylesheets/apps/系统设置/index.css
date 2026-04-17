@@ -59,7 +59,7 @@
 .settings .left .topbar .wintools div:active {
   filter: brightness(0.85);
 }
-.settings .left .topbar c-input {
+.settings .left .topbar swift-input {
   width: 200px;
   align-self: center;
   margin-top: 20px;

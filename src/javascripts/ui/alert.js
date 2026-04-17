@@ -4,7 +4,7 @@ let newAlertText;
 let newAlertButton;
 
 export function createAlert(icon, title, text, btn, command, mobile = false) {
-    newAlert = document.createElement("c-messagebox");
+    newAlert = document.createElement("swift-messagebox");
     newAlert.iconpath = icon;
     newAlert.style.zIndex = 2048;
     newAlertTitle = document.createElement("p");
@@ -13,7 +13,7 @@ export function createAlert(icon, title, text, btn, command, mobile = false) {
     newAlertText = document.createElement("p");
     newAlertText.setAttribute("slot", "text");
     newAlertText.innerHTML = text;
-    newAlertButton = document.createElement("c-button");
+    newAlertButton = document.createElement("swift-button");
     newAlertButton.setAttribute("slot", "button");
     newAlertButton.setAttribute("primary", "");
     newAlertButton.innerHTML = btn;
